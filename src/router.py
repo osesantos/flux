@@ -1,14 +1,44 @@
-from fastapi import FastAPI
 from fastapi.routing import APIRouter
+from src.model import InferRequest, ClassifyRequest, ClassifyResponse
 
 router = APIRouter(prefix="/v1", tags=["v1"])
 
-@router.post("/infer")
-async def infer(payload: dict):
+@router.get("/health")
+async def health_check():
     """
-    Minimal hello world for inference endpoint.
-    payload example: {"query": "What is the capital of France?"}
+    Health check endpoint.
     """
+    return {"status": "ok"}
 
-    query = payload.get("query", "")
-    return {"response": f"Echo: {query}"}
+@router.post("/infer")
+async def infer(payload: InferRequest):
+    """
+    Inference endpoint that routes the request to the appropriate provider based on the payload.
+    If no provider or model is specified, it classifies the query to determine the best provider.
+    Example payload:
+    {
+        "query": "What is the capital of France?",
+        "provider": "ollama",  # Optional
+        "model": "mistral",    # Optional
+        "max_tokens": 256      # Optional
+    }
+    """
+    from src.providers.base import infer_provider
+
+    return await infer_provider(payload.query, payload.provider or "", payload.model or "", payload.max_tokens or 256)
+
+@router.post("/classify")
+async def classify_prompt(payload: ClassifyRequest):
+    """
+    Classification endpoint that classifies the query to determine the best provider.
+    Example payload:
+    {
+        "prompt": "What is the capital of France?"
+    }
+    """
+    from src.classifier.service import classify
+
+    response = await classify(payload.prompt)
+    return ClassifyResponse(response=response)
+
+
