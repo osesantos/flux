@@ -3,8 +3,6 @@
 **Flux** – Multi-Model LLM Router & Load Balancer  
 *The backbone for scalable, cost-aware, multi-LLM orchestration.*
 
----
-
 ## Overview
 
 Flux is a **Kubernetes-native LLM Router** designed to act as a universal interface between clients (like GoMind) and multiple LLM providers (Ollama, OpenAI, Gemini, Claude, etc.).  
@@ -17,8 +15,6 @@ It provides:
 - Kubernetes-ready deployment with Helm charts and autoscaling.  
 
 Flux is essentially the **Nginx/Envoy for LLMs**, giving you a unified, scalable, and maintainable AI infrastructure layer.
-
----
 
 ## Quickstart
 
