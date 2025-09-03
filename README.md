@@ -33,7 +33,7 @@ python -m flux.main
 
 Access the API endpoints:
 
-/query – send requests for model inference.
+/infer – infer requests for model inference.
 /metrics – Prometheus metrics.
 
 ## Contributing
