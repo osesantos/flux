@@ -1,7 +1,8 @@
 from ollama import Client
+from loguru import logger
 
 # TODO: Change to use env or config file
-#URL = "http://ollama-phi.ollama.svc.cluster.local:11435"
+# URL = "http://ollama-phi.ollama.svc.cluster.local:11435"
 
 client = Client(
     host="http://localhost:11435"
@@ -19,11 +20,4 @@ async def classify(prompt: str) -> str:
 
     response = client.generate(model=MODEL,prompt=prompt)   
 
-    return _clean_classification(response.response)
-
-def _clean_classification(classification: str) -> str:
-    """
-    Cleans the classification string by removing unwanted characters.
-    """
-    return classification.lower().replace("'", "").replace('"', '').strip()
-
+    return response.response

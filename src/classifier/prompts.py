@@ -1,25 +1,38 @@
 def llm_classification_prompt(query: str) -> str:
     return f"""
-You are an AI routing assistant for a local-first LLM system.
+You are an intent classification AI for a local-first LLM router.
 
-Task: Given a user query, decide which language model provider to use.
+Task:
+- Analyze the user query, in between <Query> and </Query> tags.
+- Classify the query into: provider, model, confidence (float 0-1).
+- Output a single-line JSON with keys: provider, model, confidence. As {{"provider":str,"model":str,"confidence":float}}.
 
 Rules:
-1. Always prefer "ollama" (local) if the query can be handled locally.
-2. Use "openai" only if the query requires advanced reasoning or generation.
-3. Return only the provider name: "ollama" or "openai".
-4. Keep the response short and lowercase.
-5. Do not include any explanations or additional text.
-6. If unsure, default to "ollama".
-7. Do not mention any other providers.
-8. Answer in a single word, without quotes.
+- Only provide a single-line valid json and nothing else.
+- If unsure, use provider "ollama" and model "gemma3:1b".
+- Ensure JSON is valid and exactly matches the schema: {{"provider":str,"model":str,"confidence":float}}.
+- Confidence should be a float between 0 and 1, representing your certainty in the classification. Use the highest confidence (close to 1) for clear cases, lower (0.5-0.7) for ambiguous cases.
+- Do not include any explanations or additional text.
+- Do not use markdown formatting or backticks.
+- Use lowercase for provider and model names.
 
-Options:
-- "ollama": For general questions, simple tasks, local data processing, and privacy-sensitive queries.
-- "openai": For complex reasoning, creative writing, advanced coding tasks, and when high accuracy is essential.
+List of Providers:
+- ollama: used for general, simple, local, and private queries.
+- openai: used for complex, creative, coding, reasoning, and high-accuracy.
 
-User query:
-"{query}"
+List of ollama Models:
+- mistral: local model for most complex tasks, but very slow.
+- phi3:mini: used for classification.
+- gemma3:1b: simple tasks, fast and quick, used for summarization and to answers when requested for a quick or fast response.
+- nomic-embed-text: used for embedding and vector search tasks.
 
-Answer:
+List of openai Models:
+- gpt-4.1-2025-04-14
+
+Example output:
+{{"provider":"ollama","model":"gemma3:1b","confidence":0.95}}
+
+<Query>
+{query}
+</Query>
 """

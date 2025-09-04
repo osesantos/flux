@@ -1,5 +1,5 @@
 from fastapi.routing import APIRouter
-from src.model import InferRequest, ClassifyRequest, ClassifyResponse
+from src.model import InferRequest, ClassifyRequest, ClassifyResponse, EmbedRequest
 
 router = APIRouter(prefix="/v1", tags=["v1"])
 
@@ -41,4 +41,12 @@ async def classify_prompt(payload: ClassifyRequest):
     response = await classify(payload.prompt)
     return ClassifyResponse(response=response)
 
+@router.post("/embed")
+async def embed_query(payload: EmbedRequest):
+    """
+    Embedding endpoint that generates embeddings for the given query using the specified provider.
+    Example query: "What is the capital of France?"
+    """
+    from src.embedder.service import embed_text
 
+    return await embed_text(payload.query)
