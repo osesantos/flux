@@ -1,0 +1,67 @@
+import os
+from typing import Iterable
+import openai
+from openai.types.chat import ChatCompletionMessageParam
+from src.model.openai_message_request import OpenAiMessageRequest
+from src.model.openai_response import OpenAiChoice, OpenAiResponse
+
+client = openai.OpenAI(
+    api_key=os.getenv("OPENAI_API_KEY")
+)
+
+def chat_completion(messages: list[OpenAiMessageRequest], model: str, max_tokens: int = 500) -> OpenAiResponse:
+    """
+    Calls the OpenAI API to get a chat completion.
+    """
+    if model is None or model.strip() == "":
+        raise ValueError("Model must be specified")
+
+    if not messages or len(messages) == 0:
+        raise ValueError("At least one message must be provided")
+
+    response = client.chat.completions.create(
+        model=model,
+        messages=_parse_messages(messages),
+        max_tokens=max_tokens
+    )
+
+    return _parse_response(response)
+
+
+def _parse_messages(messages: list[OpenAiMessageRequest]) -> Iterable[ChatCompletionMessageParam]:
+    """
+    Converts a list of OpenAiMessageRequest objects to the format expected by the OpenAI API.
+    """
+    for msg in messages:
+        yield {"role": msg.role, "content": msg.content} # type: ignore
+
+
+def _parse_message_response(choice) -> OpenAiMessageRequest:
+    """
+    Parses the OpenAI API response into an OpenAiResponse object.
+    """
+    msg = choice.message
+    return OpenAiMessageRequest(role=msg.role, content=msg.content)
+
+def _parse_choice_response(choice) -> OpenAiChoice:
+    """
+    Parses the OpenAI API response into an OpenAiChoice object.
+    """
+    return OpenAiChoice(
+        index=choice.index,
+        message=_parse_message_response(choice),
+        finish_reason=choice.finish_reason
+    )
+
+def _parse_response(response) -> OpenAiResponse:
+    """
+    Parses the OpenAI API response into an OpenAiResponse object.
+    """
+    return OpenAiResponse(
+        id=response.id,
+        object=response.object,
+        created=response.created,
+        model=response.model,
+        choices=[_parse_choice_response(choice) for choice in response.choices],
+    )
+

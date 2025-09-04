@@ -1,25 +1,79 @@
-from classifier.service import classify
-from classifier.prompts import llm_classification_prompt
+from typing import Any, Awaitable, Callable
 from loguru import logger
 from src.model import InferResponse
 
 async def infer_provider(query: str, provider: str = "", model: str = "", max_tokens: int = 256) -> InferResponse:
     response = "" 
-    if provider == "" and model == "":
-        logger.info("No provider or model specified, classifying query...")
-        model = await classify(llm_classification_prompt(query))
-        logger.info(f"Classified provider: '{model}'")
+    latency = 0.0
+    if provider == "" or model == "":
+        from classifier.service import classify
+        from classifier.prompts import llm_classification_prompt
 
-    if model == "ollama":
+        logger.info("No provider or model specified, classifying query...")
+        provider, classification_latency = await _mesure_latency_async(
+            classify,
+            llm_classification_prompt(query)
+        )
+        logger.info(f"Classified provider: '{provider}'")
+        latency += classification_latency
+
+    if provider == "ollama":
         from .ollama import generate as ollama_generate
+
         logger.info("Using Ollama provider...")
-        response = await ollama_generate(query)
-        logger.info(f"Ollama response: '{response}'")
+        response, ollama_latency = await _mesure_latency_async(
+            ollama_generate,
+            query
+        )
+        logger.info(f"Ollama responded successfully.")
+        latency += ollama_latency
+
+    elif provider == "openai":
+        from .openai import chat_completion as openai_chat_completion
+        from src.model import OpenAiMessageRequest
+
+        logger.info("Using OpenAI provider...")
+        model = "gpt-4.1-2025-04-14" if model == "" else model
+        logger.info(f"Using default OpenAI model: '{model}'")
+        messages = [OpenAiMessageRequest(role="user", content=query)]
+        openai_response, openai_latency = _mesure_latency(
+            openai_chat_completion,
+            messages, 
+            model, 
+            max_tokens
+        )
+        response = openai_response.choices[0].message.content
+        logger.info(f"OpenAI responded successfully.")
+        latency += openai_latency
 
     return InferResponse(
         response=response,
         provider=provider,
         model=model,
-        latency_ms=0,  # Placeholder for latency measurement
+        latency_ms=latency,
         cost_usd=0.0  # Placeholder for cost calculation
     )
+
+async def _mesure_latency_async(coro_func: Callable[..., Awaitable[Any]], *args, **kwargs) -> tuple[Any, float]:
+    """ 
+    Measures the latency of an async function call in milliseconds.
+    """
+    import time
+
+    start_time = time.perf_counter()
+    result = await coro_func(*args, **kwargs)
+    end_time = time.perf_counter()
+    latency_ms = (end_time - start_time) * 1000 # Convert to milliseconds
+    return result, latency_ms
+
+def _mesure_latency(func: Callable[..., Any], *args, **kwargs) -> tuple[Any, float]:
+    """ 
+    Measures the latency of a function call in milliseconds.
+    """
+    import time
+
+    start_time = time.perf_counter()
+    result = func(*args, **kwargs)
+    end_time = time.perf_counter()
+    latency_ms = (end_time - start_time) * 1000 # Convert to milliseconds
+    return result, latency_ms

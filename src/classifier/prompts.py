@@ -14,6 +14,10 @@ Rules:
 7. Do not mention any other providers.
 8. Answer in a single word, without quotes.
 
+Options:
+- "ollama": For general questions, simple tasks, local data processing, and privacy-sensitive queries.
+- "openai": For complex reasoning, creative writing, advanced coding tasks, and when high accuracy is essential.
+
 User query:
 "{query}"
 
