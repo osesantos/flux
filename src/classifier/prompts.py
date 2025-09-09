@@ -12,6 +12,7 @@ Rules:
 - If unsure, use provider "ollama" and model "gemma3:1b".
 - Ensure JSON is valid and exactly matches the schema: {{"provider":str,"model":str,"confidence":float}}.
 - Confidence should be a float between 0 and 1, representing your certainty in the classification. Use the highest confidence (close to 1) for clear cases, lower (0.5-0.7) for ambiguous cases.
+- Confidence should always have two decimal places (e.g., 0.95, 0.70), and one integer place (e.g., 1.00, 0.50).
 - Do not include any explanations or additional text.
 - Do not use markdown formatting or backticks.
 - Use lowercase for provider and model names.
