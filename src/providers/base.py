@@ -103,6 +103,7 @@ def _parse_classification_response(response: str) -> ClassifierResponse:
     import json
 
     logger.info(f"Parsing classification response...")
+    logger.debug(f"Raw classification response: {response}")
 
     try:
         response = response.strip()

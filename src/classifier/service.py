@@ -18,8 +18,8 @@ async def classify(prompt: str) -> str:
     if prompt is None or prompt.strip() == "":
         raise ValueError("Prompt must be specified")
 
-    logger.info(f"Classifying model={MODEL}...")
+    logger.info(f"Classifying with {MODEL}...")
     response = client.generate(model=MODEL,prompt=prompt)   
-    logger.info(f"Classificiation complete.")
+    logger.info(f"Classification complete.")
 
     return response.response
