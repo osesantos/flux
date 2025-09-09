@@ -8,8 +8,8 @@ async def infer_provider(query: str, provider: str = "", model: str = "", max_to
     classification_confidence = 0.0
 
     if provider == "" or model == "":
-        from classifier.service import classify
-        from classifier.prompts import llm_classification_prompt
+        from src.classifier.service import classify
+        from src.classifier.prompts import llm_classification_prompt
 
         logger.info("No provider or model specified, classifying query...")
         cresp, classification_latency = await _mesure_latency_async(
