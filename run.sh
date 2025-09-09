@@ -16,4 +16,4 @@ export PYTHONPATH="${PYTHONPATH}:/home/osesantos/git/flux/src"
 
 echo "Running the application..."
 
-uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
+uvicorn src.main:app --reload --host 0.0.0.0 --port 5544
