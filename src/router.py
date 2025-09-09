@@ -50,3 +50,5 @@ async def embed_query(payload: EmbedRequest):
     from src.embedder.service import embed_text
 
     return await embed_text(payload.query)
+
+# TODO: Add an endpoint to list available providers and models
