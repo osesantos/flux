@@ -1,4 +1,5 @@
 from ollama import Client
+from loguru import logger
 
 # TODO: Change to use env or config file
 # URL = "http://ollama-phi.ollama.svc.cluster.local:11435"
@@ -17,7 +18,9 @@ async def generate(query: str, model: str) -> str:
         host=_get_host(model)
     )
 
+    logger.info(f"Generating model={model}...")
     response = client.generate(model=model, prompt=query)
+    logger.info(f"Generation complete.")
 
     return response.response.strip()
 
@@ -33,7 +36,9 @@ async def embeddings(query: str, model: str = "nomic-embed-text") -> list[float]
         host=_get_host(model)
     )
 
+    logger.info(f"Generating embeddings model={model}...")
     response = client.embeddings(model=model, prompt=query)
+    logger.info(f"Embeddings generation complete.")
 
     # Convert sequence to list of floats
     return [float(x) for x in response.embedding]

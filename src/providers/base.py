@@ -7,6 +7,8 @@ async def infer_provider(query: str, provider: str = "", model: str = "", max_to
     latency = 0.0
     classification_confidence = 0.0
 
+    logger.info(f"Starting inference...")
+
     if provider == "" or model == "":
         from src.classifier.service import classify
         from src.classifier.prompts import llm_classification_prompt
@@ -71,6 +73,8 @@ async def _mesure_latency_async(coro_func: Callable[..., Awaitable[Any]], *args,
     """
     import time
 
+    logger.info(f"Measuring latency for async function {coro_func.__name__}...")
+
     start_time = time.perf_counter()
     result = await coro_func(*args, **kwargs)
     end_time = time.perf_counter()
@@ -82,6 +86,8 @@ def _mesure_latency(func: Callable[..., Any], *args, **kwargs) -> tuple[Any, flo
     Measures the latency of a function call in milliseconds.
     """
     import time
+
+    logger.info(f"Measuring latency for function {func.__name__}...")
 
     start_time = time.perf_counter()
     result = func(*args, **kwargs)
@@ -95,6 +101,9 @@ def _parse_classification_response(response: str) -> ClassifierResponse:
     Expects a JSON string with keys: provider, model, confidence.
     """
     import json
+
+    logger.info(f"Parsing classification response...")
+
     try:
         response = response.strip()
         response = response.replace("'", '"')  # Replace single quotes with double quotes for valid JSON

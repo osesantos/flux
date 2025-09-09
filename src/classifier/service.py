@@ -5,7 +5,7 @@ from loguru import logger
 # URL = "http://ollama-phi.ollama.svc.cluster.local:11435"
 
 client = Client(
-    host="http://localhost:11435"
+    host="http://ollama-phi.ollama.svc.cluster.local:11435"
 )
 
 MODEL = "phi3:mini"
@@ -18,6 +18,8 @@ async def classify(prompt: str) -> str:
     if prompt is None or prompt.strip() == "":
         raise ValueError("Prompt must be specified")
 
+    logger.info(f"Classifying model={MODEL}...")
     response = client.generate(model=MODEL,prompt=prompt)   
+    logger.info(f"Classificiation complete.")
 
     return response.response

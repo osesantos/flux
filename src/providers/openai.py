@@ -4,6 +4,7 @@ import openai
 from openai.types.chat import ChatCompletionMessageParam
 from src.model.openai_message_request import OpenAiMessageRequest
 from src.model.openai_response import OpenAiChoice, OpenAiResponse
+from loguru import logger
 
 client = openai.OpenAI(
     api_key=os.getenv("OPENAI_API_KEY")
@@ -19,11 +20,13 @@ def chat_completion(messages: list[OpenAiMessageRequest], model: str, max_tokens
     if not messages or len(messages) == 0:
         raise ValueError("At least one message must be provided")
 
+    logger.info(f"Generating chat completion model={model}...")
     response = client.chat.completions.create(
         model=model,
         messages=_parse_messages(messages),
         max_tokens=max_tokens
     )
+    logger.info(f"Chat completion generation complete.")
 
     return _parse_response(response)
 
@@ -57,6 +60,7 @@ def _parse_response(response) -> OpenAiResponse:
     """
     Parses the OpenAI API response into an OpenAiResponse object.
     """
+    logger.info(f"Parsing response...")
     return OpenAiResponse(
         id=response.id,
         object=response.object,
