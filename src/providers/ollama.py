@@ -13,10 +13,8 @@ async def generate(query: str, model: str) -> str:
     if query is None or query.strip() == "":
         raise ValueError("Query must be specified")
 
-    port = _get_host(model)
-
     client = Client(
-        host=f"{BASE_URL}:{port}"
+        host=_get_host(model)
     )
 
     response = client.generate(model=model, prompt=query)
@@ -31,10 +29,8 @@ async def embeddings(query: str, model: str = "nomic-embed-text") -> list[float]
     if query is None or query.strip() == "":
         raise ValueError("Query must be specified")
 
-    port = _get_host(model)
-
     client = Client(
-        host=f"{BASE_URL}:{port}"
+        host=_get_host(model)
     )
 
     response = client.embeddings(model=model, prompt=query)
