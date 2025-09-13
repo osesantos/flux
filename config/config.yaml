@@ -1,0 +1,30 @@
+version: 1.0
+llms:
+  - name: openai
+    model: gpt-4
+    provider: openai
+  - name: mistral
+    model: mistral
+    provider: ollama
+    url: http://ollama-mistral.ollama.svc.cluster.local
+    port: 11434
+  - name: phi:mini
+    model: phi:mini
+    provider: ollama
+    url: http://ollama-phi.ollama.svc.cluster.local
+    port: 11435
+  - name: nomic-embed-text
+    model: nomic-embed-text
+    provider: ollama
+    url: http://ollama-embed.ollama.svc.cluster.local
+    port: 11436
+  - name: gemma3:1b
+    model: gemma3:1b
+    provider: ollama
+    url: http://ollama-gemma.ollama.svc.cluster.local
+    port: 11437
+  - name: gpt-oss:20b
+    model: gpt-oss:20b
+    provider: ollama
+    url: http://ollama-gpt-oss.ollama.svc.cluster.local
+    port: 11438

@@ -6,6 +6,8 @@ from .openai_message_request import OpenAiMessageRequest
 from .openai_response import OpenAiResponse, OpenAiChoice
 from .classifier_response import ClassifierResponse
 from .embed_request import EmbedRequest
+from .config import Config
+from .llm_config import LLMConfig
 
 __all__ = [
     "InferRequest", 
@@ -16,5 +18,7 @@ __all__ = [
     "OpenAiResponse",
     "OpenAiChoice",
     "ClassifierResponse",
-    "EmbedRequest"
+    "EmbedRequest",
+    "Config",
+    "LLMConfig"
 ]

@@ -2,6 +2,7 @@ import os
 from typing import Iterable
 import openai
 from openai.types.chat import ChatCompletionMessageParam
+from src.config.config import GetLLMConfigByName
 from src.model.openai_message_request import OpenAiMessageRequest
 from src.model.openai_response import OpenAiChoice, OpenAiResponse
 from loguru import logger
@@ -10,19 +11,18 @@ client = openai.OpenAI(
     api_key=os.getenv("OPENAI_API_KEY")
 )
 
-def chat_completion(messages: list[OpenAiMessageRequest], model: str, max_tokens: int = 500) -> OpenAiResponse:
+def chat_completion(messages: list[OpenAiMessageRequest], max_tokens: int = 500, llm_name: str = "openai") -> OpenAiResponse:
     """
     Calls the OpenAI API to get a chat completion.
     """
-    if model is None or model.strip() == "":
-        raise ValueError("Model must be specified")
-
     if not messages or len(messages) == 0:
         raise ValueError("At least one message must be provided")
 
-    logger.info(f"Generating chat completion model={model}...")
+    llm = GetLLMConfigByName(llm_name)
+
+    logger.info(f"Generating chat completion model={llm_name}...")
     response = client.chat.completions.create(
-        model=model,
+        model=llm.model,
         messages=_parse_messages(messages),
         max_tokens=max_tokens
     )
