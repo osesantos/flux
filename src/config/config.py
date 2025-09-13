@@ -8,7 +8,7 @@ def LoadConfig() -> Config:
     import yaml
     with open(FILE_PATH, 'r') as file:
         config_dict = yaml.safe_load(file)
-    return Config.model_validate(config_dict)
+    return Config(**config_dict)
 
 def GetLLMConfigByName(name: str) -> LLMConfig:
     """Get LLM configuration by name"""
