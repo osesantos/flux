@@ -51,8 +51,8 @@ async def infer_provider(query: str, provider: str = "", model: str = "", max_to
         openai_response, openai_latency = _mesure_latency(
             openai_chat_completion,
             messages, 
-            model, 
-            max_tokens
+            max_tokens,
+            model
         )
         response = openai_response.choices[0].message.content
         logger.info(f"OpenAI responded successfully.")
