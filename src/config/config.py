@@ -2,7 +2,7 @@ from src.model import Config
 from src.model.llm_config import LLMConfig
 from os import path
 
-FILE_PATH = path.join(path.dirname(__file__), '..', 'config', 'config.yaml')
+FILE_PATH = path.join(path.dirname(__file__), '..', '..', 'config', 'config.yaml')
 FILE_PATH = path.abspath(FILE_PATH)
 
 def LoadConfig() -> Config:
