@@ -13,3 +13,5 @@ docker build -t $IMAGE_NAME .
 docker tag $IMAGE_NAME localhost:5000/$IMAGE_NAME
 docker push localhost:5000/$IMAGE_NAME
 
+# delete the existing pod to force a redeploy
+kubectl delete pod -l app=flux -n flux
