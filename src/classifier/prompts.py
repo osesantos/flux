@@ -24,6 +24,7 @@ List of Providers:
 List of ollama Models:
 - mistral: local model for most complex tasks, but very slow.
 - phi3:mini: used for classification.
+- gemma3:270m: used for classification, very tiny and fast.
 - gemma3:1b: simple tasks, fast and quick, used for summarization and to answers when requested for a quick or fast response.
 - nomic-embed-text: used for embedding and vector search tasks.
 

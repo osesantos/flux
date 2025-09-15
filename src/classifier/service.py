@@ -1,7 +1,7 @@
 from ollama import Client
 from loguru import logger
 
-LLM_NAME = "phi3:mini"
+LLM_NAME = "gemma3:270m"
 
 async def classify(prompt: str) -> str:
     """
