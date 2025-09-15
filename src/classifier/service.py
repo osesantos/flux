@@ -11,6 +11,8 @@ async def classify(prompt: str) -> str:
     from src.config.config import GetLLMConfigByName
 
     llm = GetLLMConfigByName(LLM_NAME)
+
+    logger.info(f"Using LLM: {llm.name} ({llm.model}) at {llm.host}")
     client = Client(
         host=llm.host
     )
@@ -19,7 +21,7 @@ async def classify(prompt: str) -> str:
         raise ValueError("Prompt must be specified")
 
     logger.info(f"Classifying with {llm.name}...")
-    response = client.generate(model=llm.model,prompt=prompt)   
+    response = client.generate(model=llm.model, prompt=prompt)   
     logger.info(f"Classification complete.")
 
     return response.response
