@@ -28,3 +28,8 @@ llms:
     provider: ollama
     url: http://ollama-gpt-oss.ollama.svc.cluster.local
     port: 11438
+  - name: gemma3:270m
+    model: gemma3:270m
+    provider: ollama
+    url: http://ollama-gemma-tiny.ollama.svc.cluster.local
+    port: 11439
