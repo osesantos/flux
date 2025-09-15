@@ -8,8 +8,8 @@ llms:
     provider: ollama
     url: http://ollama-mistral.ollama.svc.cluster.local
     port: 11434
-  - name: phi:mini
-    model: phi:mini
+  - name: phi3:mini
+    model: phi3:mini
     provider: ollama
     url: http://ollama-phi.ollama.svc.cluster.local
     port: 11435
