@@ -17,6 +17,6 @@ def GetLLMConfigByName(name: str) -> LLMConfig:
     config = LoadConfig()
     for llm in config.llms:
         if llm.name == name:
-            llm.host = f"{llm.host}:{llm.port}"
+            llm.host = f"{llm.url}:{llm.port}"
             return llm
     raise ValueError(f"LLM with name {name} not found")
