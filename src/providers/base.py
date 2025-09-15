@@ -112,6 +112,7 @@ def _parse_classification_response(response: str) -> ClassifierResponse:
         response = response.replace(' ', '')  # Remove spaces
         response = response.replace("```json", '')  # Remove markdown json block if present
         response = response.replace("```", '')  # Remove markdown block if present
+        response = response.replace("`", '')  # Remove backticks
         response = response.lower()  # Convert to lowercase
 
         # Fix confidence formatting if necessary
