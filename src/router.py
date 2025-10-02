@@ -51,4 +51,11 @@ async def embed_query(payload: EmbedRequest):
 
     return await embed_text(payload.query)
 
-# TODO: Add an endpoint to list available providers and models
+@router.get("/list_providers")
+async def list_providers():
+    """
+    Lists all available providers and their models.
+    """
+    from src.providers.base import list_providers_and_models
+
+    return await list_providers_and_models()

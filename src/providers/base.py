@@ -67,6 +67,18 @@ async def infer_provider(query: str, provider: str = "", model: str = "", max_to
         cost_usd=0.0  # Placeholder for cost calculation
     )
 
+async def list_providers_and_models() -> dict[str, list[str]]:
+    from src.config.config import get_all_llm_configs
+
+    providers = {}
+    llms = get_all_llm_configs()
+    for llm in llms:
+        if llm.provider not in providers:
+            providers[llm.provider] = []
+        providers[llm.provider].append(llm.model)
+    
+    return providers
+
 async def _mesure_latency_async(coro_func: Callable[..., Awaitable[Any]], *args, **kwargs) -> tuple[Any, float]:
     """ 
     Measures the latency of an async function call in milliseconds.

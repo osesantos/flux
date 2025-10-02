@@ -1,6 +1,6 @@
 from ollama import Client
 from loguru import logger
-from src.config.config import GetLLMConfigByName
+from src.config.config import get_llm_config_by_name
 
 async def generate(query: str, llm_name: str) -> str:
     """
@@ -9,7 +9,7 @@ async def generate(query: str, llm_name: str) -> str:
     if query is None or query.strip() == "":
         raise ValueError("Query must be specified")
 
-    llm = GetLLMConfigByName(llm_name)
+    llm = get_llm_config_by_name(llm_name)
     client = Client(
         host=llm.host
     )
@@ -28,7 +28,7 @@ async def embeddings(query: str, llm_name: str = "nomic-embed-text") -> list[flo
     if query is None or query.strip() == "":
         raise ValueError("Query must be specified")
 
-    llm = GetLLMConfigByName(llm_name)
+    llm = get_llm_config_by_name(llm_name)
     client = Client(
         host=llm.host 
     )

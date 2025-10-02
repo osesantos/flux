@@ -8,9 +8,9 @@ async def classify(prompt: str) -> str:
     A simple classifier service that classifies text into categories.
     Calls the phi3 model in ollama to classify the text.
     """
-    from src.config.config import GetLLMConfigByName
+    from src.config.config import get_llm_config_by_name
 
-    llm = GetLLMConfigByName(LLM_NAME)
+    llm = get_llm_config_by_name(LLM_NAME)
 
     logger.info(f"Using LLM: {llm.name} ({llm.model}) at {llm.host}")
     client = Client(
