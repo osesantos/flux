@@ -49,7 +49,8 @@ async def embed_query(payload: EmbedRequest):
     """
     from src.embedder.service import embed_text
 
-    return await embed_text(payload.query)
+    response = await embed_text(payload.query)
+    return {"response": response}
 
 @router.get("/list_providers")
 async def list_providers():
